@@ -1,0 +1,22 @@
+{
+  "SOMETHING_WENT_WRONG": "Etwas ist schief gelaufen",
+  "PRIVACY_POLICY_VERSION_EXISTS": "Eine Datenschutzrichtlinie mit dieser Version existiert bereits",
+  "PRIVACY_POLICY_CREATED_SUCCESS": "Datenschutzrichtlinie erfolgreich erstellt",
+  "PRIVACY_POLICY_FETCH_SUCCESS": "Datenschutzrichtlinie erfolgreich abgerufen",
+  "PRIVACY_POLICY_FETCH_ALL_SUCCESS": "Alle Datenschutzrichtlinien erfolgreich abgerufen",
+  "PRIVACY_POLICY_UPDATED_SUCCESS": "Datenschutzrichtlinie erfolgreich aktualisiert",
+  "PRIVACY_POLICY_DELETED_SUCCESS": "Datenschutzrichtlinie erfolgreich gelöscht",
+  "PRIVACY_POLICY_NOT_FOUND": "Datenschutzrichtlinie nicht gefunden",
+  "PRIVACY_POLICY_VERSION_REQUIRED": "Version ist erforderlich",
+  "PRIVACY_POLICY_VERSION_LENGTH": "Version muss zwischen 1 und 20 Zeichen lang sein",
+  "PRIVACY_POLICY_TITLE_REQUIRED": "Titel ist erforderlich",
+  "PRIVACY_POLICY_TITLE_LENGTH": "Titel muss zwischen 5 und 100 Zeichen lang sein",
+  "PRIVACY_POLICY_SECTIONS_REQUIRED": "Mindestens ein Abschnitt ist erforderlich",
+  "PRIVACY_POLICY_SECTION_TITLE_REQUIRED": "Abschnittstitel ist erforderlich",
+  "PRIVACY_POLICY_SECTION_TITLE_LENGTH": "Abschnittstitel muss zwischen 5 und 100 Zeichen lang sein",
+  "PRIVACY_POLICY_SECTION_CONTENT_REQUIRED": "Abschnittsinhalt ist erforderlich",
+  "PRIVACY_POLICY_SECTION_CONTENT_LENGTH": "Abschnittsinhalt muss mindestens 10 Zeichen lang sein",
+  "PRIVACY_POLICY_INVALID_ID": "Ungültige Datenschutzrichtlinien-ID",
+  "PRIVACY_POLICY_ID_REQUIRED": "Datenschutzrichtlinien-ID ist erforderlich",
+  "FORBIDDEN": "Sie sind nicht berechtigt, auf diese Ressource zuzugreifen"
+}

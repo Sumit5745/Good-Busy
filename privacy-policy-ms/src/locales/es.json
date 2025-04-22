@@ -1,0 +1,22 @@
+{
+  "SOMETHING_WENT_WRONG": "Algo salió mal",
+  "PRIVACY_POLICY_VERSION_EXISTS": "Ya existe una política de privacidad con esta versión",
+  "PRIVACY_POLICY_CREATED_SUCCESS": "Política de privacidad creada con éxito",
+  "PRIVACY_POLICY_FETCH_SUCCESS": "Política de privacidad recuperada con éxito",
+  "PRIVACY_POLICY_FETCH_ALL_SUCCESS": "Todas las políticas de privacidad recuperadas con éxito",
+  "PRIVACY_POLICY_UPDATED_SUCCESS": "Política de privacidad actualizada con éxito",
+  "PRIVACY_POLICY_DELETED_SUCCESS": "Política de privacidad eliminada con éxito",
+  "PRIVACY_POLICY_NOT_FOUND": "Política de privacidad no encontrada",
+  "PRIVACY_POLICY_VERSION_REQUIRED": "La versión es obligatoria",
+  "PRIVACY_POLICY_VERSION_LENGTH": "La versión debe tener entre 1 y 20 caracteres",
+  "PRIVACY_POLICY_TITLE_REQUIRED": "El título es obligatorio",
+  "PRIVACY_POLICY_TITLE_LENGTH": "El título debe tener entre 5 y 100 caracteres",
+  "PRIVACY_POLICY_SECTIONS_REQUIRED": "Se requiere al menos una sección",
+  "PRIVACY_POLICY_SECTION_TITLE_REQUIRED": "El título de la sección es obligatorio",
+  "PRIVACY_POLICY_SECTION_TITLE_LENGTH": "El título de la sección debe tener entre 5 y 100 caracteres",
+  "PRIVACY_POLICY_SECTION_CONTENT_REQUIRED": "El contenido de la sección es obligatorio",
+  "PRIVACY_POLICY_SECTION_CONTENT_LENGTH": "El contenido de la sección debe tener al menos 10 caracteres",
+  "PRIVACY_POLICY_INVALID_ID": "ID de política de privacidad inválido",
+  "PRIVACY_POLICY_ID_REQUIRED": "Se requiere el ID de la política de privacidad",
+  "FORBIDDEN": "No tienes permisos para acceder a esta recurso"
+}

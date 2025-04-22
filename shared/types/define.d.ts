@@ -1,0 +1,14 @@
+declare module "jsonwebtoken";
+declare module "cors";
+declare module "nodemailer";
+declare module "multer";
+declare module "celebrate";
+declare module "moment";
+declare module "i18n";
+declare module "pbkdf2-password-hash";
+declare module "onesignal-node";
+declare module "http-status-codes";
+declare module "swagger-ui-express";
+declare module "http-proxy-middleware";
+declare module "node-cron";
+declare module "socket.io";

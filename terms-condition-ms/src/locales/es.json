@@ -1,0 +1,14 @@
+{
+  "SOMETHING_WENT_WRONG": "Algo salió mal",
+  "UNAUTHORIZED": "No autorizado, por favor inicie sesión",
+  "ADMIN_ONLY": "Esta acción está restringida solo a usuarios administradores",
+  "TERMS_CONDITION_VERSION_EXISTS": "Los términos y condiciones con esta versión ya existen",
+  "TERMS_CONDITION_CREATED_SUCCESS": "Términos y condiciones creados exitosamente",
+  "TERMS_CONDITION_FETCH_SUCCESS": "Términos y condiciones recuperados exitosamente",
+  "TERMS_CONDITION_FETCH_ALL_SUCCESS": "Todos los términos y condiciones recuperados exitosamente",
+  "TERMS_CONDITION_NOT_FOUND": "Términos y condiciones no encontrados",
+  "TERMS_CONDITION_UPDATED_SUCCESS": "Términos y condiciones actualizados exitosamente",
+  "TERMS_CONDITION_DELETED_SUCCESS": "Términos y condiciones eliminados exitosamente",
+  "TERMS_CONDITION_VALIDATION_FAILED": "La validación de términos y condiciones falló",
+  "FORBIDDEN": "No tienes permisos para acceder a esta recurso"
+}

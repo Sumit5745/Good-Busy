@@ -1,0 +1,15 @@
+{
+  "CONVERSATIONS_FETCHED": "Conversaciones obtenidas exitosamente",
+  "CONVERSATIONS_FETCH_FAILED": "Error al obtener conversaciones",
+  "CHAT_HISTORY_FETCHED": "Historial de chat obtenido exitosamente",
+  "CHAT_HISTORY_FETCH_FAILED": "Error al obtener el historial de chat",
+  "RECEIVER_ID_REQUIRED": "Se requiere el ID del destinatario",
+  "INVALID_RECEIVER_ID": "Formato de ID de destinatario inválido",
+  "MESSAGE_SENT": "Mensaje enviado exitosamente",
+  "MESSAGE_SEND_FAILED": "Error al enviar el mensaje",
+  "MESSAGE_READ": "Mensaje marcado como leído",
+  "MESSAGE_DELETED": "Mensaje eliminado exitosamente",
+  "MESSAGE_DELETE_FAILED": "Error al eliminar el mensaje",
+  "MESSAGE_NOT_FOUND": "Mensaje no encontrado",
+  "SOMETHING_WENT_WRONG": "Algo salió mal. Por favor, inténtelo de nuevo más tarde"
+}

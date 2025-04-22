@@ -1,0 +1,10 @@
+{
+  "NOTIFICATION_LIST_SUCCESS": "Benachrichtigungen erfolgreich abgerufen",
+  "NOTIFICATION_NOT_FOUND": "Benachrichtigung nicht gefunden",
+  "NOTIFICATION_MARK_READ_SUCCESS": "Benachrichtigung als gelesen markiert",
+  "NOTIFICATION_MARK_ALL_READ_SUCCESS": "Alle Benachrichtigungen als gelesen markiert",
+  "NOTIFICATION_ERROR_GET": "Fehler beim Abrufen der Benachrichtigungen",
+  "NOTIFICATION_ERROR_MARK_READ": "Fehler beim Markieren der Benachrichtigung als gelesen",
+  "NOTIFICATION_ERROR_MARK_ALL_READ": "Fehler beim Markieren aller Benachrichtigungen als gelesen",
+  "SOMETHING_WENT_WRONG": "Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut."
+}

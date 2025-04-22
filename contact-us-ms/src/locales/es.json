@@ -1,0 +1,13 @@
+{
+  "SOMETHING_WENT_WRONG": "Algo salió mal",
+  "CONTACT_US_SUBMITTED_SUCCESS": "Formulario de contacto enviado con éxito",
+  "CONTACT_US_FETCH_SUCCESS": "Mensajes de contacto recuperados con éxito",
+  "CONTACT_US_USERNAME_REQUIRED": "El nombre de usuario es obligatorio",
+  "CONTACT_US_USERNAME_LENGTH": "El nombre de usuario debe tener entre 2 y 50 caracteres",
+  "CONTACT_US_EMAIL_REQUIRED": "El correo electrónico es obligatorio",
+  "CONTACT_US_EMAIL_INVALID": "Por favor, proporcione una dirección de correo electrónico válida",
+  "CONTACT_US_SUBJECT_REQUIRED": "El asunto es obligatorio",
+  "CONTACT_US_SUBJECT_LENGTH": "El asunto debe tener entre 5 y 100 caracteres",
+  "CONTACT_US_MESSAGE_REQUIRED": "El mensaje es obligatorio",
+  "CONTACT_US_MESSAGE_LENGTH": "El mensaje debe tener entre 10 y 1000 caracteres"
+}

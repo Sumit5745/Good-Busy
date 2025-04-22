@@ -1,0 +1,16 @@
+{
+  "FAIL_TOKEN_EXPIRED": "Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+  "TOEKN_REQUIRED": "Autorisierungstoken ist erforderlich.",
+  "USER_NOT_FOUND": "Benutzer nicht gefunden.",
+  "ACCOUNT_INACTIVE": "Konto ist inaktiv oder gelöscht. Bitte wenden Sie sich an den Support.",
+  "SOMETHING_WENT_WRONG": "Etwas ist schief gelaufen. Bitte versuchen Sie es später noch einmal.",
+  "WISHLIST": {
+    "INVALID_BOAT_ID": "Ungültige Boots-ID",
+    "BOAT_ID_REQUIRED": "Boots-ID ist erforderlich",
+    "ALREADY_IN_WISHLIST": "Dieses Boot ist bereits auf Ihrer Wunschliste",
+    "NOT_IN_WISHLIST": "Dieses Boot ist nicht auf Ihrer Wunschliste",
+    "ADDED_SUCCESS": "Boot erfolgreich zur Wunschliste hinzugefügt",
+    "REMOVED_SUCCESS": "Boot erfolgreich von der Wunschliste entfernt",
+    "FETCH_SUCCESS": "Wunschliste erfolgreich abgerufen"
+  }
+}

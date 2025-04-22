@@ -1,0 +1,18 @@
+{
+  "SOMETHING_WENT_WRONG": "Something went wrong",
+  "UNAUTHORIZED": "Unauthorized, please login",
+  "ADMIN_ONLY": "This action is restricted to admin users only",
+  "TERMS_CONDITION_VERSION_EXISTS": "Terms and conditions with this version already exists",
+  "TERMS_CONDITION_CREATED_SUCCESS": "Terms and conditions created successfully",
+  "TERMS_CONDITION_FETCH_SUCCESS": "Terms and conditions retrieved successfully",
+  "TERMS_CONDITION_FETCH_ALL_SUCCESS": "All terms and conditions retrieved successfully",
+  "TERMS_CONDITION_NOT_FOUND": "Terms and conditions not found",
+  "TERMS_CONDITION_UPDATED_SUCCESS": "Terms and conditions updated successfully",
+  "TERMS_CONDITION_DELETED_SUCCESS": "Terms and conditions deleted successfully",
+  "TERMS_CONDITION_VALIDATION_FAILED": "Terms and conditions validation failed",
+  "FORBIDDEN": "You are not authorized to access this resource",
+  "FAIL_TOKEN_EXPIRED": "Session is expired. Please log in again.",
+  "TOEKN_REQUIRED": "Authorization token is required.",
+  "USER_NOT_FOUND": "User not found.",
+  "ACCOUNT_INACTIVE": "Account is inactive or deleted. Please contact support for assistance."
+}

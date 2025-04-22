@@ -1,0 +1,15 @@
+{
+  "USER_NOT_FOUND": "Usuario no encontrado",
+  "SOMETHING_WENT_WRONG": "Algo salió mal. Por favor, inténtalo de nuevo más tarde",
+  "PROFILE_UPDATED_SUCCESSFULLY": "Perfil actualizado exitosamente",
+  "ACCESS_DENIED": "Acceso denegado",
+  "CURRENT_PASSWORD_INCORRECT": "La contraseña actual es incorrecta",
+  "SUCCESS_CHANGE_PASSWORD": "Contraseña cambiada exitosamente",
+  "USER_ROLE_CHANGED_SUCCESSFULLY": "Tu rol ha sido cambiado exitosamente",
+  "DOCUMENT_UPLOAD_REQUIRED": "Se debe subir al menos un documento",
+  "DOCUMENT_UPLOAD_SUCCESS": "Documentos subidos exitosamente",
+  "DOCUMENT_NOT_FOUND": "Documento no encontrado",
+  "DOCUMENT_DELETED_SUCCESS": "Documento eliminado exitosamente",
+  "INVALID_DOCUMENT_ID": "ID de documento inválido",
+  "DEVICE_ID_UPDATED_SUCCESSFULLY": "ID de dispositivo actualizado exitosamente"
+}

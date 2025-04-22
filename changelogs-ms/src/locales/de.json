@@ -1,0 +1,12 @@
+{
+  "CHANGELOG_FETCH_SUCCESS": "Aktivitätsprotokolle erfolgreich abgerufen",
+  "CHANGELOG_NOT_FOUND": "Aktivitätsprotokoll nicht gefunden",
+  "SOMETHING_WENT_WRONG": "Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut.",
+  "INVALID_PAGINATION_PARAMS": "Ungültige Paginierungsparameter",
+  "INVALID_FILTER_PARAMS": "Ungültige Filterparameter",
+  "FAIL_TOKEN_EXPIRED": "Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+  "TOEKN_REQUIRED": "Autorisierungstoken ist erforderlich.",
+  "USER_NOT_FOUND": "Benutzer nicht gefunden.",
+  "ACCOUNT_INACTIVE": "Konto ist inaktiv oder gelöscht. Bitte wenden Sie sich an den Support.",
+  "FORBIDDEN": "Sie sind nicht berechtigt, auf diese Ressource zuzugreifen."
+} 

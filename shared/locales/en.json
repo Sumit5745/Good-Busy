@@ -1,0 +1,31 @@
+{
+  "FAIL_TOKEN_EXPIRED": "Session is expired. Please log in again.",
+  "TOEKN_REQUIRED": "Authorization token is required.",
+  "USER_NOT_FOUND": "User not found.",
+  "ACCOUNT_INACTIVE": "Account is inactive or deleted. Please contact support for assistance.",
+  "SOMETHING_WENT_WRONG": "Something went wrong. Please try again later.",
+  "USER_PROFILE_FETCH_FAILED": "Unable to retrieve user profile information.",
+  "INVALID_CURRENCY": "Invalid currency specified. Please choose a valid currency.",
+  "BOAT_OWNER_NOT_FOUND": "Unable to locate the boat owner's account.",
+  "PAYMENT_INVALID_METHOD": "Invalid payment method specified.",
+  "PAYMENT_METHOD_NOT_SUPPORTED": "The selected payment method is not supported.",
+  "PAYMENT_FAILED": "Payment processing failed. Please try again or use a different payment method.",
+  "PAYMENT_SUCCESSFUL": "Payment processed successfully.",
+  "BOOKING_NOT_FOUND": "Booking not found.",
+  "BOOKING_NOT_READY_FOR_PAYMENT": "This booking is not ready for payment processing.",
+  "UNAUTHORIZED_BOOKING_PAYMENT": "You are not authorized to make payment for this booking.",
+  "WALLET_NOT_FOUND": "Wallet not found for this user.",
+  "WALLET_PAYMENT_FAILED_INSUFFICIENT_BALANCE": "Insufficient funds in wallet to complete this payment.",
+  "CARD_NOT_FOUND": "The selected payment card was not found or is inactive.",
+  "DEFAULT_CARD_NOT_FOUND": "No default payment card found. Please add a card or select a card for payment.",
+  "CARD_PAYMENT_FAILED": "Card payment failed. Please check your card details and try again.",
+  "WISHLIST": {
+    "INVALID_BOAT_ID": "Invalid item ID",
+    "BOAT_ID_REQUIRED": "Item ID is required",
+    "ALREADY_IN_WISHLIST": "This item is already in your wishlist",
+    "NOT_IN_WISHLIST": "This item is not in your wishlist",
+    "ADDED_SUCCESS": "Item added to wishlist successfully",
+    "REMOVED_SUCCESS": "Item removed from wishlist successfully",
+    "FETCH_SUCCESS": "Wishlist fetched successfully"
+  }
+}

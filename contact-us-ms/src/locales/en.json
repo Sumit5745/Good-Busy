@@ -1,0 +1,17 @@
+{
+  "SOMETHING_WENT_WRONG": "Something went wrong",
+  "CONTACT_US_SUBMITTED_SUCCESS": "Contact form submitted successfully",
+  "CONTACT_US_FETCH_SUCCESS": "Contact submissions retrieved successfully",
+  "CONTACT_US_USERNAME_REQUIRED": "Username is required",
+  "CONTACT_US_USERNAME_LENGTH": "Username must be between 2 and 50 characters",
+  "CONTACT_US_EMAIL_REQUIRED": "Email is required",
+  "CONTACT_US_EMAIL_INVALID": "Please provide a valid email address",
+  "CONTACT_US_SUBJECT_REQUIRED": "Subject is required",
+  "CONTACT_US_SUBJECT_LENGTH": "Subject must be between 5 and 100 characters",
+  "CONTACT_US_MESSAGE_REQUIRED": "Message is required",
+  "CONTACT_US_MESSAGE_LENGTH": "Message must be between 10 and 1000 characters",
+  "FAIL_TOKEN_EXPIRED": "Session is expired. Please log in again.",
+  "TOEKN_REQUIRED": "Authorization token is required.",
+  "USER_NOT_FOUND": "User not found.",
+  "ACCOUNT_INACTIVE": "Account is inactive or deleted. Please contact support for assistance."
+}

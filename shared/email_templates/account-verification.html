@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+        }
+        .brand-name {
+            font-size: 32px;
+            font-weight: bold;
+            color: #673AB7;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .brand-name span {
+            color: #9575CD;
+        }
+        .content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .verification-code {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .code {
+            font-size: 32px;
+            letter-spacing: 8px;
+            color: #673AB7;
+            font-weight: bold;
+            background-color: #f8f8f8;
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: inline-block;
+            border: 2px solid #673AB7;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #673AB7;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #9575CD;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #666;
+            margin-top: 20px;
+        }
+        .note {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+            text-align: center;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="brand-name">GOOD<span>BUSY</span></div>
+        </div>
+        <div class="content">
+            <h2>Verify Your Email</h2>
+            <p>Hello {{firstName}},</p>
+            <p>Welcome to Good Busy! To complete your account creation, please enter the verification code below in the app:</p>
+            
+            <div class="verification-code">
+                <div class="code">{{verificationCode}}</div>
+            </div>
+
+            <p class="note">This code will expire in 10 minutes.</p>
+            
+            <p style="text-align: center;">
+                <a href="{{verificationLink}}" class="button">Verify Email</a>
+            </p>
+
+            <p class="note">If you didn't create an account with Good Busy, please ignore this email.</p>
+        </div>
+        <div class="footer">
+            <p>© {{currentYear}} Good Busy. All rights reserved.</p>
+            <p>If you have any questions, please contact our support team.</p>
+        </div>
+    </div>
+</body>
+</html> 

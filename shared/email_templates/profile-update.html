@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Updated</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+        }
+        .brand-name {
+            font-size: 32px;
+            font-weight: bold;
+            color: #673AB7;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .brand-name span {
+            color: #9575CD;
+        }
+        .content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: block;
+            object-fit: cover;
+            border: 3px solid #673AB7;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #673AB7;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #9575CD;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #666;
+            margin-top: 20px;
+        }
+        .note {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .update-info {
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #673AB7;
+        }
+        .update-info h3 {
+            margin: 0 0 10px 0;
+            color: #673AB7;
+            font-size: 18px;
+        }
+        .update-info p {
+            margin: 8px 0;
+            color: #333;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="brand-name">GOOD<span>BUSY</span></div>
+        </div>
+        <div class="content">
+            <img src="{{profileImage}}" alt="Profile Picture" class="profile-image">
+            <h2>Profile Updated Successfully</h2>
+            <p>Hello {{firstName}},</p>
+            <p>Your profile has been successfully updated with the following changes:</p>
+            
+            <div class="update-info">
+                <h3>Updated Information</h3>
+                {{#if updatedFields.profilePicture}}
+                <p>✓ Profile picture updated</p>
+                {{/if}}
+                {{#if updatedFields.bio}}
+                <p>✓ Bio updated</p>
+                {{/if}}
+                {{#if updatedFields.name}}
+                <p>✓ Name updated</p>
+                {{/if}}
+            </div>
+
+            <p style="text-align: center;">
+                <a href="{{profileLink}}" class="button">View Profile</a>
+            </p>
+
+            <p class="note">If you didn't make these changes, please contact our support team immediately.</p>
+        </div>
+        <div class="footer">
+            <p>© {{currentYear}} Good Busy. All rights reserved.</p>
+            <p>If you have any questions, please contact our support team.</p>
+        </div>
+    </div>
+</body>
+</html>

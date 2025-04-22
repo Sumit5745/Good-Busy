@@ -1,0 +1,15 @@
+{
+  "USER_NOT_FOUND": "Benutzer nicht gefunden",
+  "SOMETHING_WENT_WRONG": "Etwas ist schief gelaufen. Bitte versuchen Sie es später noch einmal",
+  "PROFILE_UPDATED_SUCCESSFULLY": "Profil erfolgreich aktualisiert",
+  "ACCESS_DENIED": "Zugriff verweigert",
+  "CURRENT_PASSWORD_INCORRECT": "Aktuelles Passwort ist falsch",
+  "SUCCESS_CHANGE_PASSWORD": "Passwort erfolgreich geändert",
+  "USER_ROLE_CHANGED_SUCCESSFULLY": "Ihre Rolle wurde erfolgreich geändert",
+  "DOCUMENT_UPLOAD_REQUIRED": "Mindestens ein Dokument muss hochgeladen werden",
+  "DOCUMENT_UPLOAD_SUCCESS": "Dokumente erfolgreich hochgeladen",
+  "DOCUMENT_NOT_FOUND": "Dokument nicht gefunden",
+  "DOCUMENT_DELETED_SUCCESS": "Dokument erfolgreich gelöscht",
+  "INVALID_DOCUMENT_ID": "Ungültige Dokument-ID",
+  "DEVICE_ID_UPDATED_SUCCESSFULLY": "Geräte-ID erfolgreich aktualisiert"
+}

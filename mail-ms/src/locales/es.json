@@ -1,0 +1,12 @@
+{
+  "MAIL_FETCH_SUCCESS": "Correos electrónicos obtenidos con éxito",
+  "MAIL_NOT_FOUND": "Correo electrónico no encontrado",
+  "SOMETHING_WENT_WRONG": "Algo salió mal. Por favor, inténtelo de nuevo más tarde.",
+  "INVALID_PAGINATION_PARAMS": "Parámetros de paginación no válidos",
+  "INVALID_FILTER_PARAMS": "Parámetros de filtro no válidos",
+  "FAIL_TOKEN_EXPIRED": "La sesión ha caducado. Por favor, inicie sesión de nuevo.",
+  "TOKEN_REQUIRED": "Se requiere un token de autorización.",
+  "USER_NOT_FOUND": "Usuario no encontrado.",
+  "ACCOUNT_INACTIVE": "La cuenta está inactiva o eliminada. Póngase en contacto con el soporte para obtener ayuda.",
+  "FORBIDDEN": "No está autorizado para acceder a este recurso."
+} 

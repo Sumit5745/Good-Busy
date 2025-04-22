@@ -1,0 +1,16 @@
+{
+  "FAIL_TOKEN_EXPIRED": "La sesión ha caducado. Por favor, inicie sesión de nuevo.",
+  "TOEKN_REQUIRED": "Se requiere el token de autorización.",
+  "USER_NOT_FOUND": "Usuario no encontrado.",
+  "ACCOUNT_INACTIVE": "La cuenta está inactiva o eliminada. Póngase en contacto con soporte para obtener ayuda.",
+  "SOMETHING_WENT_WRONG": "Algo salió mal. Por favor, inténtalo de nuevo más tarde.",
+  "WISHLIST": {
+    "INVALID_BOAT_ID": "ID de barco no válido",
+    "BOAT_ID_REQUIRED": "Se requiere ID de barco",
+    "ALREADY_IN_WISHLIST": "Este barco ya está en tu lista de deseos",
+    "NOT_IN_WISHLIST": "Este barco no está en tu lista de deseos",
+    "ADDED_SUCCESS": "Barco añadido a la lista de deseos con éxito",
+    "REMOVED_SUCCESS": "Barco eliminado de la lista de deseos con éxito",
+    "FETCH_SUCCESS": "Lista de deseos obtenida con éxito"
+  }
+}

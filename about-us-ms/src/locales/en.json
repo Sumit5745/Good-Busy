@@ -1,0 +1,21 @@
+{
+  "ABOUT_US_CREATED": "About Us page created successfully",
+  "ABOUT_US_UPDATED": "About Us page updated successfully",
+  "ABOUT_US_DELETED": "About Us page deleted successfully",
+  "ABOUT_US_NOT_FOUND": "About Us page not found",
+  "ABOUT_US_VERSION_EXISTS": "About Us page with this version already exists",
+  "ABOUT_US_VERSION_REQUIRED": "Version is required",
+  "ABOUT_US_VERSION_LENGTH": "Version must be between 1 and 20 characters",
+  "ABOUT_US_TITLE_REQUIRED": "Title is required",
+  "ABOUT_US_TITLE_LENGTH": "Title must be between 5 and 100 characters",
+  "ABOUT_US_SECTION_TITLE_REQUIRED": "Section title is required",
+  "ABOUT_US_SECTION_TITLE_LENGTH": "Section title must be between 5 and 100 characters",
+  "ABOUT_US_SECTION_CONTENT_REQUIRED": "Section content is required",
+  "ABOUT_US_SECTION_CONTENT_LENGTH": "Section content must be at least 10 characters",
+  "ABOUT_US_SECTIONS_REQUIRED": "At least one section is required",
+  "ABOUT_US_ID_REQUIRED": "About Us ID is required",
+  "ABOUT_US_INVALID_ID": "Invalid About Us ID format",
+  "CANNOT_DELETE_ACTIVE_ABOUT_US": "Cannot delete active About Us page",
+  "INVALID_ID": "Invalid ID format",
+  "INTERNAL_SERVER_ERROR": "An internal server error occurred"
+}

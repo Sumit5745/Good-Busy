@@ -1,0 +1,23 @@
+{
+  "ACCOUNT_VERIFICATION_PENDING": "La cuenta está pendiente o inactiva. Se ha enviado un nuevo OTP para verificación.",
+  "ACCOUNT_ALREADY_EXISTS": "La cuenta ya existe.",
+  "ACCOUNT_VERIFICATION_SUCCESS": "Cuenta verificada con éxito.",
+  "ACCOUNT_REGISTERED_SUCCESSFULLY": "Usuario registrado con éxito.",
+  "SOMETHING_WENT_WRONG": "Algo salió mal. Por favor, inténtalo de nuevo más tarde.",
+  "USER_NOT_FOUND": "Usuario no encontrado.",
+  "ACCOUNT_INACTIVE": "La cuenta está inactiva. Por favor, contacta con soporte para recibir asistencia.",
+  "ACCOUNT_PENDING": "La verificación de la cuenta está pendiente.",
+  "INVALID_CREDENTIALS": "Correo electrónico o contraseña inválidos.",
+  "LOGIN_SUCCESS": "Inicio de sesión exitoso.",
+  "INVALID_OTP": "OTP inválido. Por favor, inténtalo de nuevo.",
+  "OTP_EXPIRED": "El OTP ha caducado. Por favor, solicita un nuevo OTP.",
+  "OTP_SENT": "OTP enviado con éxito. Por favor, revisa tu correo electrónico.",
+  "PASSWORD_RESET_SUCCESS": "Restablecimiento de contraseña exitoso.",
+  "FAIL_TOKEN_EXPIRED": "La sesión ha caducado. Por favor, inicie sesión de nuevo.",
+  "TOEKN_REQUIRED": "Se requiere el token de autorización.",
+  "VERIFICATION_CODE_SENT": "Su cuenta ha sido creada. Por favor, verifique su correo electrónico para completar el registro.",
+  "ACCOUNT_VERIFICATION_REQUIRED": "Su cuenta requiere verificación. Hemos enviado un nuevo código de verificación a su correo electrónico.",
+  "OTP_RESENT_SUCCESS": "Se ha enviado un nuevo código de verificación a su dirección de correo electrónico.",
+  "OTP_REQUEST_TOO_SOON": "Por favor, espere un momento antes de solicitar otro código de verificación.",
+  "OTP_MAX_REQUESTS_EXCEEDED": "Has solicitado demasiados códigos de verificación hoy. Inténtalo de nuevo mañana o contacta con nuestro equipo de soporte."
+}

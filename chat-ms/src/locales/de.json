@@ -1,0 +1,15 @@
+{
+  "CONVERSATIONS_FETCHED": "Konversationen erfolgreich abgerufen",
+  "CONVERSATIONS_FETCH_FAILED": "Fehler beim Abrufen der Konversationen",
+  "CHAT_HISTORY_FETCHED": "Chat-Verlauf erfolgreich abgerufen",
+  "CHAT_HISTORY_FETCH_FAILED": "Fehler beim Abrufen des Chat-Verlaufs",
+  "RECEIVER_ID_REQUIRED": "Empfänger-ID ist erforderlich",
+  "INVALID_RECEIVER_ID": "Ungültiges Empfänger-ID-Format",
+  "MESSAGE_SENT": "Nachricht erfolgreich gesendet",
+  "MESSAGE_SEND_FAILED": "Fehler beim Senden der Nachricht",
+  "MESSAGE_READ": "Nachricht als gelesen markiert",
+  "MESSAGE_DELETED": "Nachricht erfolgreich gelöscht",
+  "MESSAGE_DELETE_FAILED": "Fehler beim Löschen der Nachricht",
+  "MESSAGE_NOT_FOUND": "Nachricht nicht gefunden",
+  "SOMETHING_WENT_WRONG": "Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut"
+}

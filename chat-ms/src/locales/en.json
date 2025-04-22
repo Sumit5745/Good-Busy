@@ -1,0 +1,15 @@
+{
+  "CONVERSATIONS_FETCHED": "Conversations fetched successfully",
+  "CONVERSATIONS_FETCH_FAILED": "Failed to fetch conversations",
+  "CHAT_HISTORY_FETCHED": "Chat history fetched successfully",
+  "CHAT_HISTORY_FETCH_FAILED": "Failed to fetch chat history",
+  "RECEIVER_ID_REQUIRED": "Receiver ID is required",
+  "INVALID_RECEIVER_ID": "Invalid receiver ID format",
+  "MESSAGE_SENT": "Message sent successfully",
+  "MESSAGE_SEND_FAILED": "Failed to send message",
+  "MESSAGE_READ": "Message read successfully",
+  "MESSAGE_DELETED": "Message deleted successfully",
+  "MESSAGE_DELETE_FAILED": "Failed to delete message",
+  "MESSAGE_NOT_FOUND": "Message not found",
+  "SOMETHING_WENT_WRONG": "Something went wrong. Please try again later"
+} 

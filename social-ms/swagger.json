@@ -1,0 +1,184 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Social Microservice API Documentation",
+    "version": "1.0.0",
+    "description": "API documentation for Social microservice"
+  },
+  "servers": [
+    {
+      "url": "/v1/social",
+      "description": "Social API base URL"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Social",
+      "description": "Social connections and interactions endpoints"
+    }
+  ],
+  "paths": {
+    "/follow": {
+      "post": {
+        "tags": ["Social"],
+        "summary": "Send follow request",
+        "description": "Send a follow request to another user",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FollowRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Follow request sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or already following"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/request/{id}": {
+      "put": {
+        "tags": ["Social"],
+        "summary": "Respond to follow request",
+        "description": "Accept or reject a follow request",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Follow request ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["status"],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["accepted", "rejected"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Follow request response updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Follow request not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FollowRequest": {
+        "type": "object",
+        "required": ["userId"],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "example": "60d21b4667d0d8992e610c85"
+          }
+        }
+      },
+      "FollowResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Follow request sent successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "60d21b4667d0d8992e610c85"
+              },
+              "follower": {
+                "type": "string",
+                "example": "60d21b4667d0d8992e610c86"
+              },
+              "following": {
+                "type": "string",
+                "example": "60d21b4667d0d8992e610c87"
+              },
+              "status": {
+                "type": "string",
+                "example": "pending"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+} 

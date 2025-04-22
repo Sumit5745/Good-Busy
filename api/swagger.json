@@ -1,0 +1,6428 @@
+﻿{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Good-Busy API Documentation",
+    "version": "1.0.0",
+    "description": "API documentation for Good-Busy application microservices"
+  },
+  "servers": [
+    {
+      "url": "/v1",
+      "description": "API base URL"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "User authentication endpoints"
+    },
+    {
+      "name": "User",
+      "description": "User management endpoints"
+    },
+    {
+      "name": "Notification",
+      "description": "Notification management endpoints"
+    },
+    {
+      "name": "Contact Us",
+      "description": "Contact us form and inquiries"
+    },
+    {
+      "name": "Privacy Policy",
+      "description": "Privacy policy management"
+    },
+    {
+      "name": "Terms & Conditions",
+      "description": "Terms and conditions management"
+    },
+    {
+      "name": "About Us",
+      "description": "About us content management"
+    },
+    {
+      "name": "Changelogs",
+      "description": "Application changelog endpoints"
+    },
+    {
+      "name": "Mail",
+      "description": "Email templates and sending functionality"
+    },
+    {
+      "name": "Chat",
+      "description": "Chat system endpoints and WebSocket events"
+    },
+    {
+      "name": "Goals",
+      "description": "Personal goals management"
+    },
+    {
+      "name": "Social",
+      "description": "Social connections and interactions"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Register new user",
+        "description": "Create a new user account with optional profile picture upload. IMPORTANT: To upload a profile picture, switch Content-Type to 'multipart/form-data' using the dropdown at the top of this form.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "password",
+                  "confirmPassword",
+                  "agreeToTerms"
+                ],
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john@example.com"
+                  },
+                  "bio": {
+                    "type": "string",
+                    "example": "Software developer passionate about technology"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "minLength": 6
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "format": "password",
+                    "minLength": 6
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Profile picture file (JPG, PNG, JPEG). Max size: 5MB. Use this field to upload your profile picture during registration."
+                  },
+                  "agreeToTerms": {
+                    "type": "boolean",
+                    "example": true,
+                    "description": "Agreement to Privacy Policy and Terms & Conditions"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Account registered successfully"
+                    },
+                    "token": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User",
+                      "description": "User data including profileImage if a profile picture was uploaded"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "409": {
+            "description": "Account already exists"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Login user",
+        "description": "Login with email and password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Login successful"
+                    },
+                    "token": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid credentials"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "401": {
+            "description": "Account inactive"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Forgot password",
+        "description": "Request a password reset OTP",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OTP sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "OTP sent to your email"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Reset password",
+        "description": "Reset password with OTP",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Password reset successful"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid OTP"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/profile": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user profile",
+        "description": "Get current user profile information",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Profile retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update user profile",
+        "description": "Update current user profile information including profile picture",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "bio": {
+                    "type": "string",
+                    "example": "Software developer passionate about technology"
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Profile image file (JPG, PNG)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Profile updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/change-password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Change password",
+        "description": "Change password for logged in user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password changed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Password changed successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Current password is incorrect"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/switch-role": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Change user role",
+        "description": "Change the role of a user (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["userId", "role"],
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "example": "60d21b4667d0d8992e610c85"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["user", "admin"],
+                    "example": "admin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Role changed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User role updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/list": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get all users",
+        "description": "Get a list of all users (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Users retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "users": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "number",
+                              "example": 25
+                            },
+                            "page": {
+                              "type": "number",
+                              "example": 1
+                            },
+                            "limit": {
+                              "type": "number",
+                              "example": 10
+                            },
+                            "pages": {
+                              "type": "number",
+                              "example": 3
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/delete": {
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete user account",
+        "description": "Delete the current user's account (confirmation required)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["password", "confirm"],
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "confirm": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Account deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Account deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid password or confirmation"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/update-device-id": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Update device ID",
+        "description": "Update the user's device ID for push notifications",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["deviceId"],
+                "properties": {
+                  "deviceId": {
+                    "type": "string",
+                    "example": "fcm-device-token-12345"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Device ID updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Device ID updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid device ID"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/users/register-fcm-token": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Register Firebase Cloud Messaging token",
+        "description": "Register a device token for receiving push notifications through Firebase Cloud Messaging",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterFcmTokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Device registered successfully for notifications"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token provided"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or expired token"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/goals": {
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Create a new goal",
+        "description": "Create a new goal for the logged in user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGoalRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "description",
+                  "frequency"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Read 10 pages every day"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Read 10 pages of any book daily to build reading habit"
+                  },
+                  "frequency": {
+                    "type": "string",
+                    "enum": ["daily", "weekly", "monthly"],
+                    "example": "daily"
+                  },
+                  "privacy": {
+                    "type": "string",
+                    "enum": ["public", "private", "followers"],
+                    "default": "followers",
+                    "example": "public"
+                  },
+                  "goalImage": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Optional goal image (JPG, PNG). Max size: 5MB."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Goal created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal created successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Goals"],
+        "summary": "Get all goals",
+        "description": "Get all goals with pagination and filtering",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["my", "all"]
+            },
+            "description": "Filter goals by 'my' (user's own goals) or 'all' (all public goals)"
+          },
+          {
+            "in": "query",
+            "name": "frequency",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["daily", "weekly", "monthly"]
+            },
+            "description": "Filter goals by frequency"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goals retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goals retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "goals": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/GoalResponse"
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            },
+                            "page": {
+                              "type": "integer"
+                            },
+                            "pages": {
+                              "type": "integer"
+                            },
+                            "limit": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/goals/{id}": {
+      "get": {
+        "tags": ["Goals"],
+        "summary": "Get a specific goal",
+        "description": "Get details of a specific goal by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goal retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Goals"],
+        "summary": "Update a goal",
+        "description": "Update a specific goal by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGoalRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Read 10 pages every day"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Read 10 pages of any book daily to build reading habit"
+                  },
+                  "frequency": {
+                    "type": "string",
+                    "enum": ["daily", "weekly", "monthly"],
+                    "example": "daily"
+                  },
+                  "privacy": {
+                    "type": "string",
+                    "enum": ["public", "private", "followers"],
+                    "example": "public",
+                    "description": "Who can see this goal: 'public' (everyone), 'private' (only you), 'followers' (only your followers)"
+                  },
+                  "goalImage": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Optional goal image (JPG, PNG). Max size: 5MB."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Goal updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Not the goal owner"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Goals"],
+        "summary": "Delete a goal",
+        "description": "Delete a specific goal by ID (soft delete)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goal deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Not the goal owner"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/goals/{id}/like": {
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Like a goal",
+        "description": "Like a specific goal by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goal liked successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal liked successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/goals/{id}/thumbs-down": {
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Thumbs down a goal",
+        "description": "Thumbs down a specific goal by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goal thumbs down successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal thumbs down successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/goals/{id}/complete": {
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Mark goal as complete",
+        "description": "Mark a specific goal as complete for today",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goal marked as complete successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal marked as complete successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Not the goal owner"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/goals/stats": {
+      "get": {
+        "tags": ["Goals"],
+        "summary": "Get goal statistics",
+        "description": "Get statistical overview of a user's goals",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goal statistics retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal statistics retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalStats"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/goals/{id}": {
+      "get": {
+        "tags": ["Goals"],
+        "summary": "Get a specific goal",
+        "description": "Get details of a specific goal by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goal retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Goals"],
+        "summary": "Update a goal",
+        "description": "Update a specific goal by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGoalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Goal updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Not the goal owner"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Goals"],
+        "summary": "Delete a goal",
+        "description": "Soft delete a specific goal by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goal deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Not the goal owner"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/goals/{id}/like": {
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Like a goal",
+        "description": "Like a specific goal by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goal liked successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal liked successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/goals/{id}/thumbs-down": {
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Thumbs down a goal",
+        "description": "Thumbs down a specific goal by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goal thumbs down successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal thumbs down successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/goals/{id}/complete": {
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Complete a goal",
+        "description": "Mark a goal as complete for today",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Goal ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Goal marked as complete successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Goal marked as complete successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/GoalResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Not the goal owner"
+          },
+          "404": {
+            "description": "Goal not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/social/follow": {
+      "post": {
+        "tags": ["Social"],
+        "summary": "Send follow request",
+        "description": "Send a follow request to another user",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FollowRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Follow request sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or already following"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/social/request/{id}": {
+      "put": {
+        "tags": ["Social"],
+        "summary": "Respond to follow request",
+        "description": "Accept or reject a follow request",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Follow request ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["status"],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["accepted", "rejected"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Follow request response updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Follow request not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/social/follow/{id}": {
+      "delete": {
+        "tags": ["Social"],
+        "summary": "Unfollow user",
+        "description": "Unfollow a user you are currently following",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User ID to unfollow"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User unfollowed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User unfollowed successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Follow relationship not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/social/followers": {
+      "get": {
+        "tags": ["Social"],
+        "summary": "Get followers",
+        "description": "Get list of users following the current user",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Followers retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Followers retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "followers": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/UserFollowItem"
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            },
+                            "page": {
+                              "type": "integer"
+                            },
+                            "pages": {
+                              "type": "integer"
+                            },
+                            "limit": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/social/following": {
+      "get": {
+        "tags": ["Social"],
+        "summary": "Get following",
+        "description": "Get list of users the current user is following",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Following list retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Following list retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "following": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/UserFollowItem"
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            },
+                            "page": {
+                              "type": "integer"
+                            },
+                            "pages": {
+                              "type": "integer"
+                            },
+                            "limit": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/social/requests": {
+      "get": {
+        "tags": ["Social"],
+        "summary": "Get pending requests",
+        "description": "Get pending follow requests for the current user",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pending requests retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Pending requests retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "requests": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/FollowRequestItem"
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            },
+                            "page": {
+                              "type": "integer"
+                            },
+                            "pages": {
+                              "type": "integer"
+                            },
+                            "limit": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/social/stats/{userId}": {
+      "get": {
+        "tags": ["Social"],
+        "summary": "Get user social stats",
+        "description": "Get social statistics for a specific user",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User ID to get stats for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Social stats retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Social stats retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SocialStats"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/notifications": {
+      "get": {
+        "tags": ["Notification"],
+        "summary": "Get user notifications",
+        "description": "Get list of notifications for the logged in user",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          },
+          {
+            "in": "query",
+            "name": "read",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter by read status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notifications retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/notifications/mark-read": {
+      "put": {
+        "tags": ["Notification"],
+        "summary": "Mark notifications as read",
+        "description": "Mark one or all notifications as read for the logged in user",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "notificationId": {
+                    "type": "string",
+                    "description": "Specific notification ID to mark as read. If not provided, all notifications will be marked as read."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Notifications marked as read successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Notifications marked as read successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Notification not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/notifications/count": {
+      "get": {
+        "tags": ["Notification"],
+        "summary": "Get unread notification count",
+        "description": "Get count of unread notifications for the logged in user",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Notification count retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Notification count retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "example": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/notifications/settings": {
+      "get": {
+        "tags": ["Notification"],
+        "summary": "Get notification settings",
+        "description": "Get notification preferences for the logged in user",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Notification settings retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Notification settings retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "emailNotifications": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "pushNotifications": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "goalReminders": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "socialNotifications": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Notification"],
+        "summary": "Update notification settings",
+        "description": "Update notification preferences for the logged in user",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "emailNotifications": {
+                    "type": "boolean"
+                  },
+                  "pushNotifications": {
+                    "type": "boolean"
+                  },
+                  "goalReminders": {
+                    "type": "boolean"
+                  },
+                  "socialNotifications": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Notification settings updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Notification settings updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/notifications/{id}": {
+      "delete": {
+        "tags": ["Notification"],
+        "summary": "Delete notification",
+        "description": "Delete a specific notification",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Notification ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notification deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Notification deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Notification not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/contact": {
+      "post": {
+        "tags": ["Contact Us"],
+        "summary": "Submit contact form",
+        "description": "Submit a contact form with user inquiry",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Contact form submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Your message has been submitted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Contact Us"],
+        "summary": "Get contact submissions",
+        "description": "Get list of contact form submissions (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["pending", "resolved", "in-progress"]
+            },
+            "description": "Filter by submission status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact submissions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/contact/{id}": {
+      "get": {
+        "tags": ["Contact Us"],
+        "summary": "Get contact submission",
+        "description": "Get a specific contact form submission by ID (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Contact submission ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact submission retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Contact submission retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ContactResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "404": {
+            "description": "Contact submission not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Contact Us"],
+        "summary": "Update contact submission",
+        "description": "Update status or add notes to a contact submission (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Contact submission ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["pending", "resolved", "in-progress"]
+                  },
+                  "adminNotes": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Contact submission updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Contact submission updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ContactResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "404": {
+            "description": "Contact submission not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Contact Us"],
+        "summary": "Delete contact submission",
+        "description": "Delete a contact form submission (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Contact submission ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact submission deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Contact submission deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "404": {
+            "description": "Contact submission not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/privacy-policy": {
+      "get": {
+        "tags": ["Privacy Policy"],
+        "summary": "Get latest privacy policy",
+        "description": "Retrieve the latest active privacy policy",
+        "responses": {
+          "200": {
+            "description": "Privacy policy retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Privacy policy retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/PrivacyPolicyResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Privacy policy not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Privacy Policy"],
+        "summary": "Create new privacy policy",
+        "description": "Create a new version of the privacy policy (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivacyPolicyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Privacy policy created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Privacy policy created successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/PrivacyPolicyResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/privacy-policy/all": {
+      "get": {
+        "tags": ["Privacy Policy"],
+        "summary": "Get all privacy policies",
+        "description": "Get list of all privacy policy versions (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Privacy policies retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivacyPoliciesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/privacy-policy/{id}": {
+      "get": {
+        "tags": ["Privacy Policy"],
+        "summary": "Get specific privacy policy",
+        "description": "Get a specific privacy policy by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Privacy policy ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Privacy policy retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Privacy policy retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/PrivacyPolicyResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Privacy policy not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Privacy Policy"],
+        "summary": "Update privacy policy",
+        "description": "Update a specific privacy policy (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Privacy policy ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivacyPolicyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Privacy policy updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Privacy policy updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/PrivacyPolicyResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "404": {
+            "description": "Privacy policy not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Privacy Policy"],
+        "summary": "Delete privacy policy",
+        "description": "Delete a specific privacy policy (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Privacy policy ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Privacy policy deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Privacy policy deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "404": {
+            "description": "Privacy policy not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/terms-conditions": {
+      "get": {
+        "tags": ["Terms & Conditions"],
+        "summary": "Get latest terms and conditions",
+        "description": "Retrieve the latest active terms and conditions",
+        "responses": {
+          "200": {
+            "description": "Terms and conditions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Terms and conditions retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/TermsConditionResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Terms and conditions not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Terms & Conditions"],
+        "summary": "Create new terms and conditions",
+        "description": "Create a new version of the terms and conditions (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TermsConditionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Terms and conditions created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Terms and conditions created successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/TermsConditionResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/terms-conditions/all": {
+      "get": {
+        "tags": ["Terms & Conditions"],
+        "summary": "Get all terms and conditions",
+        "description": "Get list of all terms and conditions versions (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Terms and conditions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TermsConditionsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/terms-conditions/{id}": {
+      "get": {
+        "tags": ["Terms & Conditions"],
+        "summary": "Get specific terms and conditions",
+        "description": "Get specific terms and conditions by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Terms and conditions ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Terms and conditions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Terms and conditions retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/TermsConditionResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Terms and conditions not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Terms & Conditions"],
+        "summary": "Update terms and conditions",
+        "description": "Update specific terms and conditions (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Terms and conditions ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TermsConditionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Terms and conditions updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Terms and conditions updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/TermsConditionResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "404": {
+            "description": "Terms and conditions not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Terms & Conditions"],
+        "summary": "Delete terms and conditions",
+        "description": "Delete specific terms and conditions (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Terms and conditions ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Terms and conditions deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Terms and conditions deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "404": {
+            "description": "Terms and conditions not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/about-us": {
+      "get": {
+        "tags": ["About Us"],
+        "summary": "Get latest about us content",
+        "description": "Retrieve the latest active about us content",
+        "responses": {
+          "200": {
+            "description": "About us content retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "About us content retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/AboutUsResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "About us content not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["About Us"],
+        "summary": "Create new about us content",
+        "description": "Create a new version of the about us content (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AboutUsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "About us content created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "About us content created successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/AboutUsResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/about-us/all": {
+      "get": {
+        "tags": ["About Us"],
+        "summary": "Get all about us versions",
+        "description": "Get list of all about us content versions (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "About us versions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AboutUsListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/about-us/{id}": {
+      "get": {
+        "tags": ["About Us"],
+        "summary": "Get specific about us content",
+        "description": "Get specific about us content by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "About us content ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "About us content retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "About us content retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/AboutUsResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "About us content not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["About Us"],
+        "summary": "Update about us content",
+        "description": "Update specific about us content (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "About us content ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AboutUsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "About us content updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "About us content updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/AboutUsResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "404": {
+            "description": "About us content not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["About Us"],
+        "summary": "Delete about us content",
+        "description": "Delete specific about us content (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "About us content ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "About us content deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "About us content deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "404": {
+            "description": "About us content not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/changelogs": {
+      "post": {
+        "tags": ["Changelogs"],
+        "summary": "Create a new changelog",
+        "description": "Create a new changelog for the logged in user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangelogRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Changelog created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Changelog created successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ChangelogResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Changelogs"],
+        "summary": "Get all changelogs",
+        "description": "Get all changelogs with pagination and filtering",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["my", "all"]
+            },
+            "description": "Filter changelogs by 'my' (user's own changelogs) or 'all' (all public changelogs)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changelogs retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Changelogs retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "changelogs": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/ChangelogResponse"
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            },
+                            "page": {
+                              "type": "integer"
+                            },
+                            "pages": {
+                              "type": "integer"
+                            },
+                            "limit": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/changelogs/stats": {
+      "get": {
+        "tags": ["Changelogs"],
+        "summary": "Get changelog statistics",
+        "description": "Get statistical overview of a user's changelogs",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changelog statistics retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Changelog statistics retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ChangelogStats"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/changelogs/{id}": {
+      "get": {
+        "tags": ["Changelogs"],
+        "summary": "Get a specific changelog",
+        "description": "Get details of a specific changelog by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Changelog ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changelog retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Changelog retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ChangelogResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Changelog not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Changelogs"],
+        "summary": "Update a changelog",
+        "description": "Update a specific changelog by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Changelog ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChangelogRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Changelog updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Changelog updated successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ChangelogResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Not the changelog owner"
+          },
+          "404": {
+            "description": "Changelog not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Changelogs"],
+        "summary": "Delete a changelog",
+        "description": "Soft delete a specific changelog by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Changelog ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changelog deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Changelog deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Not the changelog owner"
+          },
+          "404": {
+            "description": "Changelog not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/changelogs/{id}/like": {
+      "post": {
+        "tags": ["Changelogs"],
+        "summary": "Like a changelog",
+        "description": "Like a specific changelog by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Changelog ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changelog liked successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Changelog liked successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ChangelogResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Changelog not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/changelogs/{id}/thumbs-down": {
+      "post": {
+        "tags": ["Changelogs"],
+        "summary": "Thumbs down a changelog",
+        "description": "Thumbs down a specific changelog by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Changelog ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changelog thumbs down successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Changelog thumbs down successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ChangelogResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Changelog not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/changelogs/{id}/complete": {
+      "post": {
+        "tags": ["Changelogs"],
+        "summary": "Complete a changelog",
+        "description": "Mark a changelog as complete for today",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Changelog ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changelog marked as complete successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Changelog marked as complete successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ChangelogResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - Not the changelog owner"
+          },
+          "404": {
+            "description": "Changelog not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/mail": {
+      "post": {
+        "tags": ["Mail"],
+        "summary": "Send email",
+        "description": "Send an email to a recipient",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendEmailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email sent successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Mail"],
+        "summary": "Get email templates",
+        "description": "Get list of email templates",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email templates retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email templates retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/EmailTemplatesResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/mail/{id}": {
+      "get": {
+        "tags": ["Mail"],
+        "summary": "Get a specific email template",
+        "description": "Get details of a specific email template by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Email template ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email template retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email template retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/EmailTemplateResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Email template not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Mail"],
+        "summary": "Update an email template",
+        "description": "Update a specific email template",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Email template ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailTemplateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email template updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email template updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Email template not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Mail"],
+        "summary": "Delete an email template",
+        "description": "Delete a specific email template",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Email template ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email template deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email template deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Email template not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/chat": {
+      "post": {
+        "tags": ["Chat"],
+        "summary": "Send chat message",
+        "description": "Send a chat message to a recipient",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatMessage"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chat message sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Chat message sent successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Chat"],
+        "summary": "Get chat messages",
+        "description": "Get list of chat messages",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chat messages retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Chat messages retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ChatMessagesResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/chat/conversations": {
+      "get": {
+        "tags": ["Chat"],
+        "summary": "Get conversations",
+        "description": "Get list of conversations",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conversations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Conversations retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ConversationsResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/chat/conversation/{id}": {
+      "get": {
+        "tags": ["Chat"],
+        "summary": "Get a specific conversation",
+        "description": "Get details of a specific conversation by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Conversation ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conversation retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Conversation retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Conversation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Conversation not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/chat/conversation/{id}/messages": {
+      "get": {
+        "tags": ["Chat"],
+        "summary": "Get messages in a specific conversation",
+        "description": "Get list of messages in a specific conversation",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Conversation ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Messages retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Messages retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ChatMessagesResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "password",
+          "confirmPassword",
+          "agreeToTerms"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john@example.com"
+          },
+          "bio": {
+            "type": "string",
+            "example": "Software developer passionate about technology"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          },
+          "confirmPassword": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          },
+          "avatar": {
+            "type": "string",
+            "format": "binary",
+            "description": "Profile picture file (JPG, PNG, JPEG). Max size: 5MB. Use this field to upload your profile picture during registration."
+          },
+          "agreeToTerms": {
+            "type": "boolean",
+            "example": true,
+            "description": "Agreement to Privacy Policy and Terms & Conditions"
+          }
+        }
+      },
+      "RegisterRequestMultipart": {
+        "type": "object",
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "password",
+          "confirmPassword",
+          "agreeToTerms"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john@example.com"
+          },
+          "bio": {
+            "type": "string",
+            "example": "Software developer passionate about technology"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          },
+          "confirmPassword": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          },
+          "avatar": {
+            "type": "string",
+            "format": "binary",
+            "description": "Profile picture file (JPG, PNG, JPEG). Max size: 5MB. Upload your profile image here."
+          },
+          "agreeToTerms": {
+            "type": "boolean",
+            "example": true,
+            "description": "Agreement to Privacy Policy and Terms & Conditions"
+          }
+        }
+      },
+      "ForgotPasswordRequest": {
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "ResetPasswordRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "otp",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "otp": {
+            "type": "number"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          }
+        }
+      },
+      "UpdateProfileRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "bio": {
+            "type": "string",
+            "example": "Software developer passionate about technology"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "binary",
+            "description": "Profile image file (JPG, PNG)"
+          }
+        }
+      },
+      "ChangePasswordRequest": {
+        "type": "object",
+        "required": [
+          "currentPassword",
+          "newPassword",
+          "confirmPassword"
+        ],
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          },
+          "newPassword": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          },
+          "confirmPassword": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "60d21b4667d0d8992e610c85"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@example.com"
+          },
+          "bio": {
+            "type": "string",
+            "example": "Software developer passionate about technology"
+          },
+          "profileImage": {
+            "type": "string",
+            "example": "60d21b4667d0d8992e610c86",
+            "description": "File ID reference of the profile picture. This is set when a user uploads a profile picture during registration or profile update."
+          },
+          "profileImageUrl": {
+            "type": "string",
+            "example": "/uploads/users/profile-1234567890.jpg",
+            "description": "URL to the profile picture (available when profile is retrieved). This can be used directly in img tags."
+          },
+          "role": {
+            "type": "string",
+            "enum": ["user", "admin"],
+            "example": "user"
+          },
+          "isVerified": {
+            "type": "boolean",
+            "example": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateGoalRequest": {
+        "type": "object",
+        "required": ["title", "frequency"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Read 10 pages every day"
+          },
+          "description": {
+            "type": "string",
+            "example": "Read 10 pages of any book daily to build reading habit"
+          },
+          "frequency": {
+            "type": "string",
+            "enum": ["daily", "weekly", "monthly"],
+            "example": "daily"
+          },
+          "privacy": {
+            "type": "string",
+            "enum": ["public", "private", "followers"],
+            "default": "followers",
+            "example": "followers",
+            "description": "Who can see this goal: 'public' (everyone), 'private' (only you), 'followers' (only your followers)"
+          }
+        }
+      },
+      "GoalResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "60d21b4667d0d8992e610c85"
+          },
+          "title": {
+            "type": "string",
+            "example": "Read 10 pages every day"
+          },
+          "description": {
+            "type": "string",
+            "example": "Read 10 pages of any book daily to build reading habit"
+          },
+          "userId": {
+            "type": "string",
+            "example": "60d21b4667d0d8992e610c86"
+          },
+          "frequency": {
+            "type": "string",
+            "example": "daily"
+          },
+          "privacy": {
+            "type": "string",
+            "enum": ["public", "private", "followers"],
+            "example": "followers",
+            "description": "Who can see this goal: 'public' (everyone), 'private' (only you), 'followers' (only your followers)"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "completed", "abandoned"],
+            "example": "active"
+          },
+          "streak": {
+            "type": "number",
+            "example": 5
+          },
+          "completedToday": {
+            "type": "boolean",
+            "example": false
+          },
+          "likes": {
+            "type": "number",
+            "example": 10
+          },
+          "thumbsDown": {
+            "type": "number",
+            "example": 1
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "60d21b4667d0d8992e610c86"
+              },
+              "firstName": {
+                "type": "string",
+                "example": "John"
+              },
+              "lastName": {
+                "type": "string",
+                "example": "Doe"
+              },
+              "email": {
+                "type": "string",
+                "example": "john@example.com"
+              },
+              "profileImage": {
+                "type": "string",
+                "example": "https://example.com/profile.jpg"
+              }
+            }
+          },
+          "goalImage": {
+            "type": "string",
+            "example": "https://example.com/goal-image.jpg"
+          }
+        }
+      },
+      "GoalListResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Goals retrieved successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "goals": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "60d21b4667d0d8992e610c85"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Exercise Daily"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Do 30 minutes of exercise every day"
+                    },
+                    "frequency": {
+                      "type": "string",
+                      "example": "daily"
+                    },
+                    "userId": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "60d21b4667d0d8992e610c86"
+                        },
+                        "username": {
+                          "type": "string",
+                          "example": "johndoe"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "example": "/uploads/users/avatar-1234567890.jpg"
+                        }
+                      }
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "active"
+                    },
+                    "likesCount": {
+                      "type": "number",
+                      "example": 5
+                    },
+                    "thumbsDownCount": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "isLiked": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "isThumbsDown": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "example": 25
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "number",
+                    "example": 10
+                  },
+                  "pages": {
+                    "type": "number",
+                    "example": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "FollowRequest": {
+        "type": "object",
+        "required": ["userId"],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "example": "60d21b4667d0d8992e610c85"
+          }
+        }
+      },
+      "FollowResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Follow request sent successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "60d21b4667d0d8992e610c85"
+              },
+              "follower": {
+                "type": "string",
+                "example": "60d21b4667d0d8992e610c86"
+              },
+              "following": {
+                "type": "string",
+                "example": "60d21b4667d0d8992e610c87"
+              },
+              "status": {
+                "type": "string",
+                "example": "pending"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "FollowRequestItem": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "follower": {
+            "$ref": "#/components/schemas/UserFollowItem"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "accepted", "rejected"]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "NotificationListResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Notifications retrieved successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "notifications": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Notification"
+                }
+              },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "example": 25
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "number",
+                    "example": 10
+                  },
+                  "pages": {
+                    "type": "number",
+                    "example": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "60d21b4667d0d8992e610c85"
+          },
+          "userId": {
+            "type": "string",
+            "example": "60d21b4667d0d8992e610c86"
+          },
+          "title": {
+            "type": "string",
+            "example": "New goal created"
+          },
+          "message": {
+            "type": "string",
+            "example": "You have successfully created a new goal"
+          },
+          "type": {
+            "type": "string",
+            "example": "goal",
+            "enum": ["goal", "social", "system"]
+          },
+          "read": {
+            "type": "boolean",
+            "example": false
+          },
+          "referenceId": {
+            "type": "string",
+            "example": "60d21b4667d0d8992e610c87"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ContactRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "message"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ContactResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "adminNotes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ContactListResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Contact submissions retrieved successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "submissions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContactResponse"
+                }
+              },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "example": 25
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "number",
+                    "example": 10
+                  },
+                  "pages": {
+                    "type": "number",
+                    "example": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PrivacyPolicyRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "content"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "PrivacyPolicyResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PrivacyPoliciesResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Privacy policies retrieved successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "policies": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PrivacyPolicyResponse"
+                }
+              },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "example": 25
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "number",
+                    "example": 10
+                  },
+                  "pages": {
+                    "type": "number",
+                    "example": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "TermsConditionRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "content"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "TermsConditionResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TermsConditionsResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Terms and conditions retrieved successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "conditions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TermsConditionResponse"
+                }
+              },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "example": 25
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "number",
+                    "example": 10
+                  },
+                  "pages": {
+                    "type": "number",
+                    "example": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AboutUsRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "content"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "AboutUsResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AboutUsListResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "About us versions retrieved successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "versions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AboutUsResponse"
+                }
+              },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "example": 25
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "number",
+                    "example": 10
+                  },
+                  "pages": {
+                    "type": "number",
+                    "example": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ChangelogRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "content"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "ChangelogResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ChangelogsListResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Changelogs retrieved successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "changelogs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChangelogResponse"
+                }
+              },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "example": 25
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "pages": {
+                    "type": "number",
+                    "example": 3
+                  },
+                  "limit": {
+                    "type": "number",
+                    "example": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "EmailTemplatesResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Email templates retrieved successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "templates": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EmailTemplateResponse"
+                }
+              },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "example": 25
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "number",
+                    "example": 10
+                  },
+                  "pages": {
+                    "type": "number",
+                    "example": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "EmailTemplateRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "content"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "EmailTemplateResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SendEmailRequest": {
+        "type": "object",
+        "required": [
+          "templateId",
+          "recipientEmail",
+          "subject",
+          "content"
+        ],
+        "properties": {
+          "templateId": {
+            "type": "string"
+          },
+          "recipientEmail": {
+            "type": "string",
+            "format": "email"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "ChatMessagesResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Chat messages retrieved successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "messages": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChatMessage"
+                }
+              },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "example": 25
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "pages": {
+                    "type": "number",
+                    "example": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ChatMessage": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "senderId": {
+            "type": "string"
+          },
+          "recipientId": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ConversationsResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Conversations retrieved successfully"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "conversations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Conversation"
+                }
+              },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "example": 25
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "limit": {
+                    "type": "number",
+                    "example": 10
+                  },
+                  "pages": {
+                    "type": "number",
+                    "example": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Conversation": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "participants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "lastMessage": {
+            "$ref": "#/components/schemas/ChatMessage"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GoalStats": {
+        "type": "object",
+        "properties": {
+          "totalGoals": {
+            "type": "number",
+            "example": 15
+          },
+          "activeGoals": {
+            "type": "number",
+            "example": 10
+          },
+          "completedGoals": {
+            "type": "number",
+            "example": 3
+          },
+          "missedGoals": {
+            "type": "number",
+            "example": 2
+          },
+          "completionRate": {
+            "type": "number",
+            "format": "float",
+            "example": 85.5
+          },
+          "longestStreak": {
+            "type": "number",
+            "example": 21
+          },
+          "currentStreak": {
+            "type": "number",
+            "example": 7
+          },
+          "likes": {
+            "type": "number",
+            "example": 45
+          },
+          "thumbsDown": {
+            "type": "number",
+            "example": 5
+          }
+        }
+      },
+      "ChangelogStats": {
+        "type": "object",
+        "properties": {
+          "totalChangelogs": {
+            "type": "number",
+            "example": 15
+          },
+          "activeChangelogs": {
+            "type": "number",
+            "example": 10
+          },
+          "completedChangelogs": {
+            "type": "number",
+            "example": 3
+          },
+          "pendingChangelogs": {
+            "type": "number",
+            "example": 2
+          },
+          "averageEngagementRate": {
+            "type": "number",
+            "format": "float",
+            "example": 78.5
+          },
+          "mostPopularChangelog": {
+            "type": "string",
+            "example": "New Features Release v2.0"
+          },
+          "totalLikes": {
+            "type": "number",
+            "example": 120
+          }
+        }
+      },
+      "UpdateGoalRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Read 10 pages every day"
+          },
+          "description": {
+            "type": "string",
+            "example": "Read 10 pages of any book daily to build reading habit"
+          },
+          "frequency": {
+            "type": "string",
+            "enum": ["daily", "weekly", "monthly"],
+            "example": "daily"
+          },
+          "privacy": {
+            "type": "string",
+            "enum": ["public", "private", "followers"],
+            "example": "public",
+            "description": "Who can see this goal: 'public' (everyone), 'private' (only you), 'followers' (only your followers)"
+          }
+        }
+      },
+      "UpdateChangelogRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Version 2.0 Release Notes"
+          },
+          "content": {
+            "type": "string",
+            "example": "Added new features including social integration and goal tracking"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "version": {
+            "type": "string",
+            "example": "2.0.1"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["draft", "published", "archived"],
+            "example": "published"
+          }
+        }
+      },
+      "UserFollowItem": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          }
+        }
+      },
+      "SocialStats": {
+        "type": "object",
+        "properties": {
+          "totalFollowers": {
+            "type": "number"
+          },
+          "totalFollowing": {
+            "type": "number"
+          },
+          "totalPosts": {
+            "type": "number"
+          },
+          "totalLikes": {
+            "type": "number"
+          },
+          "totalComments": {
+            "type": "number"
+          }
+        }
+      },
+      "RegisterFcmTokenRequest": {
+        "type": "object",
+        "required": [
+          "token"
+        ],
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Firebase Cloud Messaging token for the device",
+            "example": "fMR0Txz1Sdaq:APA91bHq0vOq3NJX..."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

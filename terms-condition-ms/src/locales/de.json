@@ -1,0 +1,14 @@
+{
+  "SOMETHING_WENT_WRONG": "Etwas ist schief gelaufen",
+  "UNAUTHORIZED": "Nicht autorisiert, bitte melden Sie sich an",
+  "ADMIN_ONLY": "Diese Aktion ist nur für Administratoren zugänglich",
+  "TERMS_CONDITION_VERSION_EXISTS": "Allgemeine Geschäftsbedingungen mit dieser Version existieren bereits",
+  "TERMS_CONDITION_CREATED_SUCCESS": "Allgemeine Geschäftsbedingungen erfolgreich erstellt",
+  "TERMS_CONDITION_FETCH_SUCCESS": "Allgemeine Geschäftsbedingungen erfolgreich abgerufen",
+  "TERMS_CONDITION_FETCH_ALL_SUCCESS": "Alle Allgemeinen Geschäftsbedingungen erfolgreich abgerufen",
+  "TERMS_CONDITION_NOT_FOUND": "Allgemeine Geschäftsbedingungen nicht gefunden",
+  "TERMS_CONDITION_UPDATED_SUCCESS": "Allgemeine Geschäftsbedingungen erfolgreich aktualisiert",
+  "TERMS_CONDITION_DELETED_SUCCESS": "Allgemeine Geschäftsbedingungen erfolgreich gelöscht",
+  "TERMS_CONDITION_VALIDATION_FAILED": "Validierung der Allgemeinen Geschäftsbedingungen fehlgeschlagen",
+  "FORBIDDEN": "Sie sind nicht berechtigt, auf diese Ressource zuzugreifen"
+}

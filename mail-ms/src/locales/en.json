@@ -1,0 +1,12 @@
+{
+  "MAIL_FETCH_SUCCESS": "Emails fetched successfully",
+  "MAIL_NOT_FOUND": "Email not found",
+  "SOMETHING_WENT_WRONG": "Something went wrong. Please try again later.",
+  "INVALID_PAGINATION_PARAMS": "Invalid pagination parameters",
+  "INVALID_FILTER_PARAMS": "Invalid filter parameters",
+  "FAIL_TOKEN_EXPIRED": "Session is expired. Please log in again.",
+  "TOKEN_REQUIRED": "Authorization token is required.",
+  "USER_NOT_FOUND": "User not found.",
+  "ACCOUNT_INACTIVE": "Account is inactive or deleted. Please contact support for assistance.",
+  "FORBIDDEN": "You are not authorized to access this resource."
+} 

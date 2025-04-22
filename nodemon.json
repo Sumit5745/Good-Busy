@@ -1,0 +1,21 @@
+{
+  "watch": [
+    "shared",
+    "api",
+    "auth-ms",
+    "user-ms",
+    "notification-ms",
+    "contact-us-ms",
+    "privacy-policy-ms",
+    "terms-condition-ms",
+    "about-us-ms",
+    "changelogs-ms",
+    "mail-ms",
+    "chat-ms",
+    "goal-ms",
+    "social-ms"
+  ],
+  "ext": ".ts,.js,.json",
+  "ignore": [],
+  "exec": "npm start"
+}

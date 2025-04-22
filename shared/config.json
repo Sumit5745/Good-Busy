@@ -1,0 +1,61 @@
+{
+  "dev": {
+    "db": "mongodb://localhost:27017/good-busy",
+    "PORT": 3000,
+    "FILE_BASE_URL": "http://localhost:3000/uploads/",
+    "APP_URL": "http://localhost:3000",
+    "JWT_SECRET": "myjwtsecret",
+    "JWT_EXIPIRATION_TIME": "1d",
+    "IS_EMAIL_USE_SMTP": "on",
+    "OTP_EXPIRE_TIME": 5,
+    "SMTP_HOST": "smtp.example.com",
+    "SMTP_PORT": 587,
+    "SMTP_USER": "your-email@example.com",
+    "SMTP_PASSWORD": "your-password",
+    "SMTP_EMAIL": "noreply@example.com",
+    "FROM_EMAIL": "noreply@example.com",
+    "FIREBASE_SERVER_KEY": "your-firebase-server-key",
+    "FIREBASE_PROJECT_ID": "your-project-id",
+    "FIREBASE_APP_NAME": "Good-Busy",
+    "SIGNAL_APP_NAME": "Good-Busy",
+    "SIGNAL_SMS_FROM": "+11234567890",
+    "services": {
+      "auth-ms": {
+        "PORT": 3100
+      },
+      "user-ms": {
+        "PORT": 3101
+      },
+      "notification-ms": {
+        "PORT": 3106
+      },
+      "contact-us-ms": {
+        "PORT": 3110
+      },
+      "privacy-policy-ms": {
+        "PORT": 3111
+      },
+      "terms-condition-ms": {
+        "PORT": 3112
+      },
+      "about-us-ms": {
+        "PORT": 3113
+      },
+      "changelogs-ms": {
+        "PORT": 3118
+      },
+      "mail-ms": {
+        "PORT": 3119
+      },
+      "chat-ms": {
+        "PORT": 3120
+      },
+      "goal-ms": {
+        "PORT": 3121
+      },
+      "social-ms": {
+        "PORT": 3122
+      }
+    }
+  }
+}

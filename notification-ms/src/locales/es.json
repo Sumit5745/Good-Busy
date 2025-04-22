@@ -1,0 +1,10 @@
+{
+  "NOTIFICATION_LIST_SUCCESS": "Notificaciones recuperadas con éxito",
+  "NOTIFICATION_NOT_FOUND": "Notificación no encontrada",
+  "NOTIFICATION_MARK_READ_SUCCESS": "Notificación marcada como leída",
+  "NOTIFICATION_MARK_ALL_READ_SUCCESS": "Todas las notificaciones marcadas como leídas",
+  "NOTIFICATION_ERROR_GET": "Error al obtener las notificaciones",
+  "NOTIFICATION_ERROR_MARK_READ": "Error al marcar la notificación como leída",
+  "NOTIFICATION_ERROR_MARK_ALL_READ": "Error al marcar todas las notificaciones como leídas",
+  "SOMETHING_WENT_WRONG": "Algo salió mal. Por favor, inténtelo de nuevo más tarde."
+}

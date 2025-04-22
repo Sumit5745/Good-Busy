@@ -1,0 +1,13 @@
+{
+  "SOMETHING_WENT_WRONG": "Etwas ist schief gelaufen",
+  "CONTACT_US_SUBMITTED_SUCCESS": "Kontaktformular erfolgreich übermittelt",
+  "CONTACT_US_FETCH_SUCCESS": "Kontaktanfragen erfolgreich abgerufen",
+  "CONTACT_US_USERNAME_REQUIRED": "Benutzername ist erforderlich",
+  "CONTACT_US_USERNAME_LENGTH": "Der Benutzername muss zwischen 2 und 50 Zeichen lang sein",
+  "CONTACT_US_EMAIL_REQUIRED": "E-Mail ist erforderlich",
+  "CONTACT_US_EMAIL_INVALID": "Bitte geben Sie eine gültige E-Mail-Adresse an",
+  "CONTACT_US_SUBJECT_REQUIRED": "Betreff ist erforderlich",
+  "CONTACT_US_SUBJECT_LENGTH": "Der Betreff muss zwischen 5 und 100 Zeichen lang sein",
+  "CONTACT_US_MESSAGE_REQUIRED": "Nachricht ist erforderlich",
+  "CONTACT_US_MESSAGE_LENGTH": "Die Nachricht muss zwischen 10 und 1000 Zeichen lang sein"
+}

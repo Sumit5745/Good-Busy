@@ -1,0 +1,12 @@
+{
+  "CHANGELOG_FETCH_SUCCESS": "Registros de actividad obtenidos exitosamente",
+  "CHANGELOG_NOT_FOUND": "Registro de actividad no encontrado",
+  "SOMETHING_WENT_WRONG": "Algo salió mal. Por favor, inténtalo de nuevo más tarde.",
+  "INVALID_PAGINATION_PARAMS": "Parámetros de paginación inválidos",
+  "INVALID_FILTER_PARAMS": "Parámetros de filtro inválidos",
+  "FAIL_TOKEN_EXPIRED": "La sesión ha caducado. Por favor, inicie sesión de nuevo.",
+  "TOEKN_REQUIRED": "Se requiere el token de autorización.",
+  "USER_NOT_FOUND": "Usuario no encontrado.",
+  "ACCOUNT_INACTIVE": "La cuenta está inactiva o eliminada. Póngase en contacto con soporte para obtener ayuda.",
+  "FORBIDDEN": "No tiene permisos para acceder a esta recurso."
+} 
